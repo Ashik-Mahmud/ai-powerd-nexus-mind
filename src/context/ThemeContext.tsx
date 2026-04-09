@@ -10,26 +10,36 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
+  // Default to true as you had it, or check system preference
   const [isDarkMode, setIsDarkMode] = useState(true);
-  const [isLoaded, setIsLoaded] = useState(false);
 
-  // Load theme from localStorage on mount
+  // 1. Initial Load: Sync state with localStorage or System Pref
   useEffect(() => {
     const savedTheme = localStorage.getItem("nexus-mind-theme");
-    if (savedTheme !== null) {
-      setIsDarkMode(savedTheme === "dark");
-    }
-    setIsLoaded(true);
+    const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    
+    const shouldBeDark = savedTheme !== null ? savedTheme === "dark" : systemPrefersDark;
+    
+    setIsDarkMode(shouldBeDark);
   }, []);
 
+  // 2. The Actual Theme Changer: Syncs React State to the HTML DOM
+  useEffect(() => {
+    const root = window.document.documentElement;
+    
+    if (isDarkMode) {
+      root.classList.add("dark");
+      localStorage.setItem("nexus-mind-theme", "dark");
+    } else {
+      root.classList.remove("dark");
+      localStorage.setItem("nexus-mind-theme", "light");
+    }
+  }, [isDarkMode]);
+
   const toggleTheme = () => {
-    const newValue = !isDarkMode;
-    setIsDarkMode(newValue);
-    // Save to localStorage
-    localStorage.setItem("nexus-mind-theme", newValue ? "dark" : "light");
+    setIsDarkMode((prev) => !prev);
   };
 
-  // Always provide the context, even during initial render
   return (
     <ThemeContext.Provider value={{ isDarkMode, toggleTheme }}>
       {children}

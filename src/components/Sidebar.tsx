@@ -65,7 +65,7 @@ export default function Sidebar() {
       {/* Mobile Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`fixed top-1/2 left-2 z-40 lg:hidden p-2 rounded-lg transition-all duration-200 transform -translate-y-1/2 ${
+        className={`fixed top-10 left-2 z-40 lg:hidden p-2 rounded-lg transition-all duration-200 transform -translate-y-1/2 ${
           isDarkMode
             ? "bg-slate-800 hover:bg-slate-700 text-white shadow-lg"
             : "bg-slate-200 hover:bg-slate-300 text-slate-900 shadow-lg"
@@ -73,9 +73,9 @@ export default function Sidebar() {
         aria-label={isOpen ? "Close sidebar" : "Open sidebar"}
       >
         {isOpen ? (
-          <ChevronLeft className="w-5 h-5" />
+          <ChevronLeft className="w-5 h-5 text-slate-500" />
         ) : (
-          <ChevronRight className="w-5 h-5" />
+          <ChevronRight className="w-5 h-5 text-slate-500" />
         )}
       </button>
 
