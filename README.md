@@ -1,36 +1,102 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Nexus Mind
 
-## Getting Started
+An AI-powered intelligent assistant that answers your questions with precision and insight. Connect with an advanced AI system to get answers on general topics or leverage your own uploaded content for personalized responses.
 
-First, run the development server:
+## 🚀 Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+### 📚 General Questions
+- Ask the AI anything on general topics
+- Get intelligent, context-aware responses
+- Powered by advanced language models
+- Real-time conversation support
+
+### 📤 Uploaded Questions & Answers
+- Upload your own documents and content
+- Ask questions specific to your uploaded materials
+- Get personalized answers based on your data
+- Seamless document management and processing
+
+## 🛠️ Tech Stack
+
+- **Frontend**: React with TypeScript
+- **Framework**: Next.js 15+
+- **Styling**: CSS
+- **State Management**: Redux
+- **API Integration**: CopilotKit
+
+## 📋 Project Structure
+
+```
+nexus-mind/
+├── app/                    # Application root
+│   ├── api/               # API routes
+│   │   └── copilotkit/   # CopilotKit integration
+│   ├── layout.tsx         # Root layout
+│   ├── page.tsx           # Home page
+│   └── globals.css        # Global styles
+├── src/
+│   ├── components/        # Reusable React components
+│   ├── context/           # React Context definitions
+│   ├── hooks/             # Custom React hooks
+│   ├── redux/             # Redux store configuration
+│   ├── services/          # API services
+│   ├── utils/             # Utility functions
+│   └── data/              # Static data
+├── public/                # Static assets
+└── package.json           # Project dependencies
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 Getting Started
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Prerequisites
+- Node.js 18+ 
+- npm or yarn
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Installation
 
-## Learn More
+1. Clone the repository
+```bash
+git clone <repository-url>
+cd nexus-mind
+```
 
-To learn more about Next.js, take a look at the following resources:
+2. Install dependencies
+```bash
+npm install
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. Set up environment variables
+Create a `.env.local` file with required configuration
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+4. Run the development server
+```bash
+npm run dev
+```
 
-## Deploy on Vercel
+Open [http://localhost:3000](http://localhost:3000) to view the application.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📖 How to Use
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### General Questions Mode
+1. Navigate to the chat interface
+2. Type your question about any general topic
+3. Receive AI-powered responses in real-time
+
+### Uploaded Content Mode
+1. Upload your documents or content
+2. Ask specific questions about your uploaded materials
+3. Get personalized answers based on your data
+
+## 🔧 Configuration
+
+- **ESLint**: Configured for code quality
+- **TypeScript**: Type-safe development
+- **PostCSS**: CSS processing
+
+## 📝 License
+
+[Add your license information here]
+
+## 👨‍💻 Contributing
+
+[Add contribution guidelines here] 
