@@ -77,15 +77,30 @@ Open [http://localhost:3000](http://localhost:3000) to view the application.
 
 ## 📖 How to Use
 
+### Authentication
+- Visit `/login` to sign in to your account
+- New users can register at `/register`
+- After authentication, you'll be redirected to the dashboard
+
+### Dashboard Features
+All main features are accessible through the dashboard at `/dashboard`:
+
+- **Chat** (`/dashboard`) - Ask general questions to the AI
+- **Upload** (`/dashboard/upload`) - Upload documents for personalized answers
+- **History** (`/dashboard/history`) - View conversation history
+- **Help** (`/dashboard/help`) - Get help and documentation
+- **Settings** (`/dashboard/settings`) - Customize your experience
+
 ### General Questions Mode
-1. Navigate to the chat interface
+1. Navigate to the Chat section in the dashboard
 2. Type your question about any general topic
 3. Receive AI-powered responses in real-time
 
 ### Uploaded Content Mode
-1. Upload your documents or content
-2. Ask specific questions about your uploaded materials
-3. Get personalized answers based on your data
+1. Go to the Upload section
+2. Upload your documents or content
+3. Ask specific questions about your uploaded materials
+4. Get personalized answers based on your data
 
 ## 🔧 Configuration
 
