@@ -35,6 +35,7 @@ export default function ChatPanel() {
     // agentId "default" links to your runtime config
     // 1. Get the agent instance (messages, state, isRunning)
     const { agent } = useAgent({
+       
         agentId: "default", // or your specific LangGraph agent ID
     });
 

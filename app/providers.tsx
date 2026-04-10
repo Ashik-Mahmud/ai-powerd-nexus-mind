@@ -11,6 +11,7 @@ export function Providers({ children }: { children: ReactNode }) {
         runtimeUrl="/api/copilotkit"
         showDevConsole={false}
         publicLicenseKey={process.env.NEXT_PUBLIC_COPILOT_PUBLIC_LICENSE_KEY}
+     
       >
         {children}
       </CopilotKit>
