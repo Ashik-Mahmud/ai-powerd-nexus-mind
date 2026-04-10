@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from 'react'
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from './ui/resizable'
-import ChatPanel from './ChatPanel'
+import ChatPanel from './chatPannel/ChatPanel'
 import { LucideMenu, LucideX } from 'lucide-react';
 
 type Props = {}

@@ -7,7 +7,9 @@ import "@copilotkit/react-ui/styles.css";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { z } from "zod";
 import { TextMessage, MessageRole } from "@copilotkit/runtime-client-gql";
-import { useTheme } from "../context/ThemeContext";
+import { useTheme } from "../../context/ThemeContext";
+import { useUser } from "@clerk/nextjs";
+import ChatMessage from "./ChatMessage";
 interface Message {
     id: string;
     text: string;
@@ -17,6 +19,7 @@ interface Message {
 
 export default function ChatPanel() {
 
+    const { user } = useUser();
     const { isDarkMode, toggleTheme } = useTheme();
     const [background, setBackground] = useState<string>("--copilot-kit-background-color");
     const [messagesData, setMessages] = useState<Message[]>([
@@ -61,11 +64,12 @@ export default function ChatPanel() {
     }, [inputText, agent, copilotkit]);
 
 
+
     useAgentContext({
         description: 'Name of the user',
-        value: `Nexus User`,
+        value: user?.fullName || user?.primaryEmailAddress?.emailAddress || `Nexus User`,
     });
-   
+
 
 
     useConfigureSuggestions({
@@ -86,16 +90,19 @@ export default function ChatPanel() {
             themePreference: z.enum(["light", "dark"]).describe("The theme to switch to"),
         }),
         handler: async ({ themePreference }) => {
-            // Logic: Only toggle if the requested theme is different from current
+
             console.log(themePreference, 'themePreference')
-            if (
-                (themePreference === "dark" && !isDarkMode) ||
-                (themePreference === "light" && isDarkMode)
-            ) {
+            const wantsDark = themePreference === "dark";
+
+            // If what the user wants is DIFFERENT from what we have, toggle it.
+            if (wantsDark !== isDarkMode) {
                 toggleTheme();
+                return `Theme successfully changed to ${themePreference} mode.`;
             }
 
-           
+            // Always return a string so the AI knows the result, even if no change was made.
+            return `The app is already in ${themePreference} mode.`;
+
         },
     });
     // 2. Access the actual generated suggestion values
@@ -113,6 +120,8 @@ export default function ChatPanel() {
         if (!messagesEndRef.current) return;
         messagesEndRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }, []);
+
+    console.log(agent?.messages, "agent messages");
 
 
     return (
@@ -141,7 +150,7 @@ export default function ChatPanel() {
 
 
             {
-                agent.messages?.length === 0 ? (
+                agent.messages.length === 0 ? (
                     <div className="flex flex-col items-center justify-center h-full">
                         {/* Greeting and instructions */}
                         <div className="text-center">
@@ -165,39 +174,30 @@ export default function ChatPanel() {
                             }
                         </div>
                     </div>
-                ) : <>
-                    {/* Messages Area */}
-                    <div className="overflow-y-auto p-4 space-y-4 min-h-0 " style={{
-                        // design scrollbar
-                        scrollbarWidth: 'thin',
-                        scrollbarColor: 'rgb(255, 255, 255) rgb(156, 163, 175)',
-                        msOverflowStyle: 'scrollbar'
+                ) : ''}
 
-                    }}>
 
-                        {agent.messages.map((message) => (
-                            <div key={message.id} className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                                <div className={`flex max-w-xs lg:max-w-md xl:max-w-lg ${message.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
-                                    <div className={`w-8 h-8 rounded-full grid place-items-center dark:text-white  font-semibold text-sm shrink-0 ${message.role === 'user' ? 'ml-3 bg-linear-to-br from-green-500 to-emerald-600' : 'mr-3 bg-linear-to-br from-blue-500 to-purple-600'}`}>
-                                        {message.role === 'user' ? 'U' : 'N'}
-                                    </div>
-                                    <div className={`px-4 py-2 rounded-2xl shadow-sm ${message.role === 'user'
-                                        ? 'bg-linear-to-br from-green-500 to-emerald-600 text-white'
-                                        : 'bg-white dark:bg-slate-700 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-600'}
-                            `}>
-                                        {agent.isRunning && message.role !== 'user' && message.id === agent.messages[agent.messages.length - 1].id && <span>Thinking...</span>}
-                                        <p className="text-sm leading-relaxed whitespace-pre-wrap text-gray-600 dark:text-gray-100"> {message.content instanceof Object && 'text' in message.content ? message.content.text : message.content}</p>
-                                        <p className={`text-xs mt-1 ${message.role === 'user' ? 'dark:text-green-100' : 'text-slate-500 dark:text-slate-400'}`}>
-                                            {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                        <div ref={messagesEndRef} />
-                    </div>
-                </>
-            }
+
+
+            <div className="overflow-y-auto p-4 space-y-4 min-h-0 " style={{
+                // design scrollbar
+                scrollbarWidth: 'thin',
+                scrollbarColor: 'rgb(255, 255, 255) rgb(156, 163, 175)',
+                msOverflowStyle: 'scrollbar',
+
+
+            }}>
+
+                {agent.messages.map((message, index) => (
+                    <ChatMessage
+                        key={message.id}
+                        message={message as TextMessage}
+                        isLast={index === agent.messages.length - 1}
+                        isRunning={agent.isRunning}
+                    />
+                ))}
+                <div ref={messagesEndRef} />
+            </div>
 
 
 
@@ -220,7 +220,7 @@ export default function ChatPanel() {
                             type="button"
                             onClick={handleSend}
                             disabled={!inputText.trim() || agent.isRunning}
-                            className="absolute right-2 bottom-2 p-2 rounded-xl bg-linear-to-br from-blue-500 to-purple-600 text-white hover:from-blue-600 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                            className="absolute right-2 bottom-2 p-2 rounded-xl bg-linear-to-br from-blue-500 to-purple-600 dark:text-white hover:from-blue-600 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                         >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />

@@ -1,4 +1,4 @@
-import ChatPanel from "@/src/components/ChatPanel";
+import ChatPanel from "@/src/components/chatPannel/ChatPanel";
 import LayoutShell from "@/src/components/LayoutShell";
 import ResizeablePanel from "@/src/components/ResizeablePanel";
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/src/components/ui/resizable";

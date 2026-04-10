@@ -17,6 +17,8 @@ import {
   ChevronLeft,
 } from "lucide-react";
 import { useTheme } from "@/src/context/ThemeContext";
+import UserProfile from "@/src/components/UserProfile";
+
 
 export default function Sidebar() {
   const { isDarkMode, toggleTheme } = useTheme();
@@ -161,6 +163,9 @@ export default function Sidebar() {
               isDarkMode ? "border-slate-800" : "border-slate-200"
             }`}
           >
+            {/* User Profile Section */}
+            <UserProfile />
+
             {/* Theme Controller */}
             <div className="flex items-center justify-between">
               <span
