@@ -122,8 +122,6 @@ export default function ChatPanel() {
         messagesEndRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }, []);
 
-    console.log(agent?.messages, "agent messages");
-
 
     return (
 
