@@ -35,7 +35,7 @@ export default function ChatPanel() {
     // agentId "default" links to your runtime config
     // 1. Get the agent instance (messages, state, isRunning)
     const { agent } = useAgent({
-       
+
         agentId: "default", // or your specific LangGraph agent ID
     });
 
@@ -92,15 +92,18 @@ export default function ChatPanel() {
         }),
         handler: async ({ themePreference }) => {
 
-            console.log(themePreference, 'themePreference')
+
             const wantsDark = themePreference === "dark";
 
+            console.log(wantsDark, isDarkMode, wantsDark !== isDarkMode)
             // If what the user wants is DIFFERENT from what we have, toggle it.
             if (wantsDark !== isDarkMode) {
+                console.log('Call inside here')
                 toggleTheme();
                 return `Theme successfully changed to ${themePreference} mode.`;
             }
 
+        
             // Always return a string so the AI knows the result, even if no change was made.
             return `The app is already in ${themePreference} mode.`;
 

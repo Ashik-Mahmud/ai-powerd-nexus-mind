@@ -7,10 +7,10 @@ import {
 const ROLE_CONFIG = {
   user: {
     icon: <User size={16} />,
-    color: "bg-emerald-500",
+    color: "bg-purple-500",
     label: "You",
     align: "justify-end",
-    bubble: "bg-emerald-600 text-white rounded-br-none"
+    bubble: "bg-purple-600 from-blue-600 to-purple-500 bg-gradient-to-br  text-white rounded-br-none"
   },
   assistant: {
     icon: <Bot size={16} />,
