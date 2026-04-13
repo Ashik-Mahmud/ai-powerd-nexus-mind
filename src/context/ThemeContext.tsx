@@ -4,7 +4,7 @@ import React, { createContext, useContext, useState, ReactNode, useEffect } from
 
 interface ThemeContextType {
   isDarkMode: boolean;
-  toggleTheme: () => void;
+  toggleTheme: (forceValue?: boolean) => void;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -36,8 +36,8 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     }
   }, [isDarkMode]);
 
-  const toggleTheme = () => {
-    setIsDarkMode((prev) => !prev);
+  const toggleTheme = (forceValue?: boolean) => {
+    setIsDarkMode((prev) => forceValue !== undefined ? forceValue : !prev);
   };
 
   return (

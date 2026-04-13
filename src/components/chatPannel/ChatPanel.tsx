@@ -21,18 +21,13 @@ export default function ChatPanel() {
 
     const { user } = useUser();
     const { isDarkMode, toggleTheme } = useTheme();
-    const [background, setBackground] = useState<string>("--copilot-kit-background-color");
-    const [messagesData, setMessages] = useState<Message[]>([
-        {
-            id: '1',
-            text: 'Hello! How can I help you today?',
-            sender: 'bot',
-            timestamp: new Date(),
-        },
-    ]);
     const [inputText, setInputText] = useState('');
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
-    // agentId "default" links to your runtime config
+
+    const isDarkModeRef = useRef(isDarkMode);
+
+
+
     // 1. Get the agent instance (messages, state, isRunning)
     const { agent } = useAgent({
 
@@ -64,13 +59,15 @@ export default function ChatPanel() {
         });
     }, [inputText, agent, copilotkit]);
 
-
+    // Sync the dark mode state with a ref so it's always up to date in the tool handler
+    useEffect(() => {
+        isDarkModeRef.current = isDarkMode;
+    }, [isDarkMode]);
 
     useAgentContext({
         description: 'Name of the user',
         value: user?.fullName || user?.primaryEmailAddress?.emailAddress || `Nexus User`,
     });
-
 
 
     useConfigureSuggestions({
@@ -91,21 +88,10 @@ export default function ChatPanel() {
             themePreference: z.enum(["light", "dark"]).describe("The theme to switch to"),
         }),
         handler: async ({ themePreference }) => {
-
-
             const wantsDark = themePreference === "dark";
-
-            console.log(wantsDark, isDarkMode, wantsDark !== isDarkMode)
-            // If what the user wants is DIFFERENT from what we have, toggle it.
-            if (wantsDark !== isDarkMode) {
-                console.log('Call inside here')
-                toggleTheme();
-                return `Theme successfully changed to ${themePreference} mode.`;
-            }
-
-        
-            // Always return a string so the AI knows the result, even if no change was made.
-            return `The app is already in ${themePreference} mode.`;
+            toggleTheme(wantsDark);
+            //Return the success status to change the tool state in the UI (optional)
+            return `Request to change theme to ${themePreference} has been processed.`;
 
         },
     });
@@ -128,7 +114,7 @@ export default function ChatPanel() {
 
     return (
 
-        <div className="h-full w-full grid grid-rows-[1fr_auto] min-h-0 bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800" style={{ background }}>
+        <div className="h-full w-full grid grid-rows-[1fr_auto] min-h-0 bg-linear-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800" >
             {/* Header */}
             {/* <div className="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-700 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm">
                 <div className="flex items-center space-x-3">
