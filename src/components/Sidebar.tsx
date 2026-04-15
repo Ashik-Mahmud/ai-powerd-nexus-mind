@@ -176,7 +176,11 @@ export default function Sidebar() {
                 Theme
               </span>
               <button
-                onClick={toggleTheme}
+                onClick={
+                  isDarkMode
+                    ? () => toggleTheme(false)
+                    : () => toggleTheme(true)
+                }
                 className={`p-2 rounded-lg transition-colors duration-200 ${
                   isDarkMode
                     ? "bg-slate-800 hover:bg-slate-700 text-yellow-400"
